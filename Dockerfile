@@ -27,11 +27,14 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
     cd /var/lib/zerotier-one && \
     zerotier-idtool generate identity.public identity.secret &&\
     zerotier-idtool initmoon identity.public >> moon.json &&\
-
-    cp /opt/patch/* . &&\
-    python3 patch.py &&\
+    sed 's/"stableEndpoints": []/"stableEndpoints": ["127.0.0.1/9993"]/' /var/lib/zerotier-one/moon.json &&\
     zerotier-idtool genmoon moon.json &&\
     mkdir moons.d && cp ./*.moon ./moons.d &&\
+
+    #cp /opt/patch/* . &&\
+    #python3 patch.py &&\
+    #zerotier-idtool genmoon moon.json &&\
+    #mkdir moons.d && cp ./*.moon ./moons.d &&\
 
     rm /opt/ZeroTierOne/attic/world/mkworld.cpp &&\
     cp mkworld.cpp /opt/ZeroTierOne/attic/world/ &&\
